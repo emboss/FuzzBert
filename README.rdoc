@@ -1,0 +1,8 @@
+== FuzzBert
+
+A random testing/fuzzer framework for Ruby.
+
+=== License
+
+Copyright (c) 2012 Martin Boßlet. Distributed under the MIT License. See LICENSE for further details.
+
