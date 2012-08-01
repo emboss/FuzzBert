@@ -35,7 +35,7 @@ class FuzzBert::Executor
         status = exitval[1]
         data = @data_cache.delete(pid)
         unless status.success?
-          save(data, pid, status) if status.termsig && status.termsig != 2 # :INT
+          save(data, pid, status) unless interrupted(status)
         end
         @n += 1
         run_test(obj) if @limit == -1 || @n < @limit
@@ -56,6 +56,11 @@ class FuzzBert::Executor
   def save(data, pid, status)
     prefix = status.termsig ? "crash" : "bug"
     File.open("#{prefix}#{pid}", "wb") { |f| f.print(data) }
+  end
+
+  def interrupted(status)
+    return false if status.exited?
+    return true if status.termsig == nil || status.termsig == 2
   end
 
   class ObjectProducer

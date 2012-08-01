@@ -12,6 +12,7 @@ container.to_data
 test = FuzzBert::Test.new do |data|
   #puts "Working..."
   Process.kill(:SEGV, Process.pid)
+  #raise RuntimeError.new("Le bug")
 end
 
 executor = FuzzBert::Executor.new(test)
