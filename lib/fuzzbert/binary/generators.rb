@@ -9,14 +9,12 @@ module FuzzBert::Binary::Generators
 
     def cycle(range)
       ary = range.to_a
-      fiber = Fiber.new do
-        ary.each do |item| 
-          item.respond_to?(:chr) ? 
-            Fiber.yield(item.chr) :
-            Fiber.yield(item)
-        end while true
+      i = 0
+      lambda do
+        ret = ary[i]
+        i = (i + 1) % ary.size
+        ret
       end
-      -> { fiber.resume }
     end
     
     def fixed(data)
