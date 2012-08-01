@@ -54,11 +54,7 @@ class FuzzBert::Executor
   end
 
   def save(data, pid, status)
-    if status.termsig
-      prefix = "crash"
-    else
-      prefix = "bug"
-    end
+    prefix = status.termsig ? "crash" : "bug"
     File.open("#{prefix}#{pid}", "wb") { |f| f.print(data) }
   end
 
