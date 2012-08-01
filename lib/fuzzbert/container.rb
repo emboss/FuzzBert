@@ -1,5 +1,5 @@
 
-class FuzzBert::Container
+class FuzzBert::Container < FuzzBert::Object
 
   def initialize(objects=[])
     @objects = objects
@@ -10,9 +10,9 @@ class FuzzBert::Container
   end
 
   def to_data
-    "".tap do |buf|
-      @objects.each do |obj|
-        buf << obj.to_data
+    super do
+      "".tap do |buf|
+        @objects.each { |obj| buf << obj.to_data }
       end
     end
   end
