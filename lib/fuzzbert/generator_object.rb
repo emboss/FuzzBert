@@ -1,5 +1,5 @@
 
-class FuzzBert::Binary::Object < FuzzBert::Object
+class FuzzBert::GeneratorObject
 
   def initialize(generator=nil, &blk)
     @generator = generator || blk
@@ -7,7 +7,7 @@ class FuzzBert::Binary::Object < FuzzBert::Object
   end
 
   def to_data
-    super &@generator
+    @generator.call
   end
 
 end

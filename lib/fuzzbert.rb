@@ -20,12 +20,12 @@ module FuzzBert
 
 end
 
-require_relative 'fuzzbert/object'
+require_relative 'fuzzbert/generators'
+require_relative 'fuzzbert/generator_object'
 require_relative 'fuzzbert/template'
 require_relative 'fuzzbert/container'
 require_relative 'fuzzbert/test'
 require_relative 'fuzzbert/executor'
 
-require_relative 'fuzzbert/binary'
 
 
