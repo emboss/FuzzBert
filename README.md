@@ -86,7 +86,7 @@ considered as a failure.
 
 `data` blocks must return a lambda or proc that takes no argument. You can either
 choose completely custom lambdas of your own or use those predefined for you in
-`FuzzBert`::Generators.
+`FuzzBert::Generators`.
 
 ## Templates
 
