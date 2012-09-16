@@ -29,7 +29,7 @@ external input".
 
 Within a `fuzz` block, there must be one occurence of `deploy` and one or several
 occurences of `data`. The `deploy` block is the spot where we deliver the random
-payload that has been generated. It agnostic about the actual target in order to
+payload that has been generated. It is agnostic about the actual target in order to
 leave you free to fuzz whatever you require in your particular case. The `data`
 blocks define the shape of the random data being generated. There can be more than
 one such block because it is often beneficial to not only shoot completely random
