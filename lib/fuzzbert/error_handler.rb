@@ -1,6 +1,24 @@
 
 module FuzzBert::Handler
+
+  module ConsoleHelper
+    def info(error_data)
+      id = error_data[:id]
+      status = error_data[:status]
+
+      crashed = status.termsig
+
+      if crashed
+        puts "The data caused a hard crash."
+      else
+        puts "The data caused an uncaught error."
+      end
+    end
+  end
+
   class FileOutput
+    include FuzzBert::Handler::ConsoleHelper
+
     def initialize(dir=nil)
       @dir = dir
       if @dir && !@dir.end_with?("/")
@@ -8,11 +26,23 @@ module FuzzBert::Handler
       end
     end
 
-    def handle(id, data, pid, status)
-      prefix = status.termsig ? "crash" : "bug"
+    def handle(error_data)
+      id = error_data[:id]
+      data = error_data[:data]
+      status = error_data[:status]
+      pid = error_data[:pid]
+
+      crashed = status.termsig
+      prefix = crashed ? "crash" : "bug"
+
       filename = "#{dir_prefix}#{prefix}#{pid}"
+      while File.exists?(filename)
+        filename << ('a'..'z').to_a.sample
+      end
       File.open(filename, "wb") { |f| f.print(data) }
+
       puts "#{id} failed. Data was saved as #{filename}."
+      info(error_data)
     end
 
     private
@@ -24,10 +54,14 @@ module FuzzBert::Handler
   end
 
   class Console
-    def handle(id, data, pid, status)
-      puts "#{id} failed. Data: #{data.inspect}"
+    include FuzzBert::Handler::ConsoleHelper
+
+    def handle(error_data)
+      puts "#{error_data[:id]} failed. Data: #{error_data[:data].inspect}"
+      info(error_data)
     end
   end
+  
 end
 
 

@@ -11,7 +11,7 @@ describe FuzzBert::AutoRun do
 
   let(:handler) do
     c = Class.new
-    def c.handle(id, data, pid, status)
+    def c.handle(error_data)
       raise RuntimeError.new
     end
     c

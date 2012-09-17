@@ -6,9 +6,12 @@ require 'fuzzbert'
 #   fuzzbert --handler MyHandler "FILE_PATTERN"
 #
 class MyHandler
-  def handle(id, data, pid, status)
+  def handle(error_data)
     #create an issue in the bug tracker
-    puts id
+    puts error_data[:id]
+    p error_data[:data]
+    puts error_data[:pid]
+    puts error_data[:status]
   end
 end
 

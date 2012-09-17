@@ -60,7 +60,12 @@ class FuzzBert::Executor
             status = exitval[1]
             data_ary = @data_cache.delete(pid)
             unless status.success?
-              handle(data_ary[0], data_ary[1], pid, status) unless interrupted(status)
+              handle({ 
+                id: data_ary[0], 
+                data: data_ary[1], 
+                pid: pid, 
+                status: status
+              }) unless interrupted(status)
             end
             @n += 1
             if @limit == -1 || @n < @limit
@@ -91,8 +96,8 @@ class FuzzBert::Executor
       exit 0
     end
 
-    def handle(id, data, pid, status)
-      @handler.handle(id, data, pid, status)
+    def handle(error_data)
+      @handler.handle(error_data)
     end
 
     def interrupted(status)

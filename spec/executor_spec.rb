@@ -75,8 +75,8 @@ describe FuzzBert::Executor do
         @handler = blk
       end
 
-      def handle(id, data, pid, status)
-        @handler.call(id, data, pid, status)
+      def handle(error_data)
+        @handler.call(error_data)
       end
     end
 
@@ -87,7 +87,7 @@ describe FuzzBert::Executor do
           data("1") { -> { "a" } }
         end
       end
-      let (:handler) { TestHandler.new { |i, d, p, s| raise RuntimeError.new } }
+      let (:handler) { TestHandler.new { |data| raise RuntimeError.new } }
       it { -> { subject }.should_not raise_error }
     end
 
@@ -99,7 +99,7 @@ describe FuzzBert::Executor do
           data("1") { -> { "a" } }
         end
       end
-      let (:handler) { TestHandler.new { |i, d, p, s| called = true } }
+      let (:handler) { TestHandler.new { |data| called = true } }
       it { -> { subject }.should_not raise_error; called.should be_true }
     end
 
@@ -110,7 +110,7 @@ describe FuzzBert::Executor do
           data("1") { -> { "a" } }
         end
       end
-      let (:handler) { TestHandler.new { |i, d, p, s| raise RuntimeError.new } }
+      let (:handler) { TestHandler.new { |data| raise RuntimeError.new } }
       it { -> { subject }.should_not raise_error }
     end
 
@@ -122,7 +122,7 @@ describe FuzzBert::Executor do
           data("1") { -> { "a" } }
         end
       end
-      let (:handler) { TestHandler.new { |i, d, p, s| called = true } }
+      let (:handler) { TestHandler.new { |data| called = true } }
       let (:generator) { FuzzBert::Generator.new("test") { "a" } }
       it { -> { subject }.should_not raise_error; called.should be_true }
     end if false #don't want to SEGV every time
