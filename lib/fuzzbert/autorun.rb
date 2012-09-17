@@ -34,10 +34,22 @@ module FuzzBert::AutoRun
     orig_args = args.dup
 
     OptionParser.new do |opts|
-      opts.banner  = 'FuzzBert options:'
+      opts.banner  = 'Usage: fuzzbert [OPTIONS] PATTERN [PATTERNS]'
+      opts.separator <<-EOS
+
+Run your random tests by pointing fuzzbert to a single or many explicit files
+or by providing a pattern. The default pattern is 'fuzz/**/fuzz_*.rb, assuming
+that your FuzzBert files (files beginning with 'fuzz_') live in a directory
+named fuzz located under the current directory that you are in.
+
+By default, fuzzbert will run the tests you specify forever, be sure to hit
+CTRL+C when you are done or specify a limit with '--limit'.
+
+EOS
+
       opts.version = FuzzBert::VERSION
 
-      opts.on '-h', '--help', 'Display this help.' do
+      opts.on '-h', '--help', 'Run ' do
         puts opts
         exit
       end
