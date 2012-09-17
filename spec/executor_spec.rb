@@ -44,6 +44,12 @@ describe FuzzBert::Executor do
       executor.handler.should == handler
     end
 
+    it "allows a sleep_delay argument" do
+      delay = 0.1
+      executor = FuzzBert::Executor.new(test, sleep_delay: delay)
+      executor.sleep_delay.should == delay
+    end
+
     it "defaults pool_size to 4" do
       FuzzBert::Executor.new(test).pool_size.should == 4
     end
@@ -55,10 +61,14 @@ describe FuzzBert::Executor do
     it "defaults handler to a FileOutputHandler" do
       FuzzBert::Executor.new(test).handler.should be_an_instance_of(FuzzBert::Handler::FileOutput)
     end
+
+    it "defaults sleep_delay to 1" do
+      FuzzBert::Executor.new(test).sleep_delay.should == 1
+    end
   end
 
   describe "#run" do
-    subject { FuzzBert::Executor.new(suite, pool_size: 1, limit: 1, handler: handler).run }
+    subject { FuzzBert::Executor.new(suite, pool_size: 1, limit: 1, handler: handler, sleep_delay: 0.05).run }
 
     class TestHandler
       def initialize(&blk)

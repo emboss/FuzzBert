@@ -37,7 +37,7 @@ describe FuzzBert::AutoRun do
 
     it "has added a TestSuite to AutoRun" do
       FuzzBert::AutoRun::TEST_CASES.size.should == 1
-      FuzzBert::AutoRun.run(pool_size: 1, limit: 1, handler: handler)
+      FuzzBert::AutoRun.run(pool_size: 1, limit: 1, handler: handler, sleep_delay: 0.05)
       called.should == true
     end
   end

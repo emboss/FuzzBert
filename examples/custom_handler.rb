@@ -1,9 +1,20 @@
 require 'fuzzbert'
 
+# To use this Handler, you must pass it as an argument
+# to the 'fuzzbert' executable, something like
+#
+#   fuzzbert --handler MyHandler "FILE_PATTERN"
+#
+class MyHandler
+  def handle(id, data, pid, status)
+    #create an issue in the bug tracker
+    puts id
+  end
+end
+
 fuzz "OpenSSL command line (asn1parse)" do
 
   deploy do |data|
-    raise "boo"
     IO.popen("openssl asn1parse -inform DER -noout", "w") do |io|
       io.write(data)
     end
