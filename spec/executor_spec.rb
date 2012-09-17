@@ -3,7 +3,7 @@ require 'fuzzbert'
 
 describe FuzzBert::Executor do
 
-  describe "new" do
+  describe "::new" do
     let(:test) do
       test = FuzzBert::Test.new(lambda { |data| data })
       FuzzBert::TestSuite.create("suite") do
@@ -16,6 +16,14 @@ describe FuzzBert::Executor do
       -> { FuzzBert::Executor.new }.should raise_error ArgumentError
       FuzzBert::Executor.new(test).should be_an_instance_of(FuzzBert::Executor)
       FuzzBert::Executor.new([test]).should be_an_instance_of(FuzzBert::Executor)
+    end
+
+    it "raises an ArgumentError if the TestSuite argument is nil" do
+      -> { FuzzBert::Executor.new(nil) }.should raise_error ArgumentError
+    end
+
+    it "raises an ArgumentError if the TestSuite argument is empty" do
+      -> { FuzzBert::Executor.new([]) }.should raise_error ArgumentError
     end
 
     it "allows a pool_size argument" do

@@ -17,8 +17,8 @@ module FuzzBert::AutoRun
   end
 
   def run(options=nil)
-    executor = options ? FuzzBert::Executor.new(TEST_CASES, options) : FuzzBert::Executor.new(TEST_CASES)
-    executor.run
+    raise RuntimeError.new "No test cases were found" if TEST_CASES.empty?
+    FuzzBert::Executor.new(TEST_CASES, options).run
   end
 
   private; module_function
@@ -58,6 +58,7 @@ module FuzzBert::AutoRun
       opts.parse! args
     end
 
+    raise ArgumentError.new("No file pattern was given") if args.empty?
     [options, args]
   end
 

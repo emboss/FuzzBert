@@ -6,11 +6,16 @@ class FuzzBert::Executor
   DEFAULT_LIMIT = -1
   DEFAULT_HANDLER = FuzzBert::Handler::FileOutput
 
-  def initialize(suites, args = { 
+  DEFAULT_ARGS = {
     pool_size: DEFAULT_POOL_SIZE,
     limit: DEFAULT_LIMIT,
     handler: DEFAULT_HANDLER.new
-  })
+  }
+
+  def initialize(suites, args = DEFAULT_ARGS)
+    raise ArgumentError.new("No test cases were passed") unless suites
+
+    args ||= DEFAULT_ARGS
     @pool_size = args[:pool_size] || DEFAULT_POOL_SIZE
     @limit = args[:limit] || DEFAULT_LIMIT
     @handler = args[:handler] || DEFAULT_HANDLER.new
@@ -124,6 +129,7 @@ class FuzzBert::Executor
         @i = 0
         objs = [objs] unless objs.respond_to?(:each)
         @objs = objs.to_a
+        raise ArgumentError.new("No test cases found") if @objs.empty?
       end
 
       def next

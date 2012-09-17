@@ -145,7 +145,9 @@ class FuzzBert::Template
     end
 
     def to_data(callbacks)
-      callbacks[@name].call
+      cb = callbacks[@name]
+      raise RuntimeError.new "No callback set for :#{@name}" unless cb
+      cb.call
     end
 
   end
