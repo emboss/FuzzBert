@@ -7,10 +7,11 @@ fuzz "Web App" do
 
   data "template" do
     t = FuzzBert::Template.new <<-EOS
-      { user: { id: ${id}, name: "${name}" } }
+      { user: { id: ${id}, name: "${name}", text: "${text}" } }
     EOS
-    t.set(:id) { FuzzBert::Generators.cycle(1..10000) }
-    t.set(:name) { FuzzBert::Generators.random }
+    t.set(:id, FuzzBert::Generators.cycle(1..10000))
+    t.set(:name) { "fixed" + FuzzBert::Generators.random.call }
+    t.set(:text, FuzzBert::Generators.random)
     t.generator
   end
 end
