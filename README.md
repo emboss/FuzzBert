@@ -190,7 +190,7 @@ fuzz "My Web App" do
   data "JSON generated from a template" do
     t = FuzzBert::Template.new '{ user: { id: ${id}, name: "${name}" } }'
     t.set(:id, FuzzBert::Generators.cycle(1..10000))
-    t.set(:name) { "fixed" + FuzzBert::Generators.random_fixlen(2).call }
+    t.set(:name) { "Fixed text plus two random bytes: #{FuzzBert::Generators.random_fixlen(2).call}" }
     t.generator
   end
 
